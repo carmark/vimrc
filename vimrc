@@ -11,9 +11,28 @@ set number
 set nowrap
 set vb
 set ruler
-set statusline=%<%f\ %h%m%r%=%{fugitive#statusline()}\ \ %-14.(%l,%c%V%)\ %P
 let g:buftabs_only_basename=1
 let g:buftabs_marker_modified = "+"
+
+"------  Set the status  ------
+set laststatus=2 
+let statusHead   ="%-.50f\ %h%m%r" 
+let statusBreakPoint    ="%<" 
+let statusSeparator      ="|" 
+let statusFileType       ="%{((&ft\ ==\ \"help\"\ \|\|\ &ft\ ==\ \"\")?\"\":\"[\".&ft.\"]\")}" 
+let statusFileFormat ="[%{(&ff\ ==\ \"unix\")?\"u\":\"d\"}]" 
+let statusAscii  ="\{%b:0x%B\}" 
+let statusCwd    ="%-.50{getcwd()}" 
+let statusBody =statusFileType.statusFileFormat.statusSeparator.statusAscii.statusSeparator."\ ".statusBreakPoint.statusCwd 
+let statusEncoding       ="[%{(&fenc\ ==\ \"\"?&enc:&fenc).(&bomb?\",BOM\":\"\")}]" 
+let statusBlank  ="%=" 
+let statusKeymap         ="%k" 
+let statusRuler  ="%-12.(%lL,%c%VC%)\ %P" 
+let statusTime   ="%{strftime(\"%y-%m-%d\",getftime(expand(\"%\")))}" 
+let statusEnd=statusKeymap."\ ".statusEncoding.statusRuler."\ ".statusTime 
+"" ........... 
+let statusString=statusHead.statusBody.statusBlank.statusEnd 
+set statusline=%!statusString
 
 " Toggle whitespace visibility with ,s
 nmap <Leader>s :set list!<CR>
@@ -30,7 +49,7 @@ set hidden
 filetype indent on
 filetype plugin on
 set autoindent
-"set expandtab
+set expandtab
 set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,node_modules/*
 
 "allow deletion of previously entered data in insert mode
